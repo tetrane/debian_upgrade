@@ -46,7 +46,7 @@ mkdir -p "$DB_PATH"
 
 # Clean the old database
 echo "Cleaning old database."
-rm "$DB_PATH/"* -rf
+rm "$DB_PATH/"* "$DB_PATH/".* -rf
 
 # Init the DB
 echo "Initializing the database. Log file: $LOG_DIR/initdb.log"
