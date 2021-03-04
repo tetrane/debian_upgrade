@@ -5,7 +5,7 @@ DUMP_PATH="$2"
 USER_ID="$(id -u)"
 PSQL_PORT=44444 # Change this if you happen to have something running here
 SOCKET_PATH="/tmp/reven-restore-$USER_ID"
-LOG_DIR="/tmp/reven-restore-logs-$USER_ID"
+LOG_DIR="/tmp/reven-restore-logs-$USER_ID-$(date --iso-8601=seconds)"
 
 mkdir -p "$SOCKET_PATH" "$LOG_DIR"
 
