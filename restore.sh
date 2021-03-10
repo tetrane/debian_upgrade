@@ -19,7 +19,7 @@ if ! [ -f "$DUMP_PATH" ]; then
     usage
 fi
 
-if [ "$(cat "$DB_PATH"/PG_VERSION 2>/dev/null)" != "9.6" ] ; then
+if [ -f "$DB_PATH/PG_VERSION" ] && [ "$(cat "$DB_PATH"/PG_VERSION 2>/dev/null)" != "9.6" ] ; then
     echo "The database folder you provided seems wrong: $DB_PATH"
     echo "Either it is not a PostgreSQL database, or it is the wrong version. Expected version is 9.6 (Stretch)."
     usage
@@ -46,7 +46,9 @@ mkdir -p "$DB_PATH"
 
 # Clean the old database
 echo "Cleaning old database."
-rm "$DB_PATH/"* "$DB_PATH/".* -rf
+# We don't want to remove the DB_PATH itself, as this may be a symlink or whatever else, that we wouldn't be able to
+# redo afterwards. Let's delete the content of DB_PATH instead.
+rm "$DB_PATH/"* "$DB_PATH/".* -rf 2>&1 | grep -v "'.' or '..'"
 
 # Init the DB
 echo "Initializing the database. Log file: $LOG_DIR/initdb.log"
